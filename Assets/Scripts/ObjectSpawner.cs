@@ -26,7 +26,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private void SpawnObstacle(int arrayNumber)
     {
-        ObjectPooler.Instance.SpawnFromPool(obstaclePrefabs[arrayNumber].tag, transform.position, transform.rotation);
+        ObjectPooler.Instance.SpawnFromPool(obstaclePrefabs[arrayNumber].tag, new Vector3(transform.position.x, (transform.position.y + obstaclePrefabs[arrayNumber].transform.position.y),transform.position.z), transform.rotation);
         //Instantiate(obstaclePrefabs[arrayNumber], transform.position, Quaternion.identity);
     }
 
