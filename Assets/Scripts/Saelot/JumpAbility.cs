@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <TODO>
+/// Fix jump counter reset. see Jumpcheck function
+/// </TODO>
 public class JumpAbility : MonoBehaviour
 {
 
@@ -40,7 +43,7 @@ public class JumpAbility : MonoBehaviour
         {
             Jump();
         }
-        Debug.Log(distanceToGround.ToString());
+        ///Debug.Log(distanceToGround.ToString());
     }
     public void Jump()
     {
@@ -57,7 +60,7 @@ public class JumpAbility : MonoBehaviour
         {
             canJump = false;
         }
-        else
+        else ///Something here is causing the player to not regain jumps if landing on rocks.
         {
             canJump = true;
             currentJumpCount = maxJumpCount;

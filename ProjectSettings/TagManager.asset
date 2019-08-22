@@ -9,6 +9,7 @@ TagManager:
   - S_Enemy
   - M_Enemy
   - Obstacle_M
+  - Obstacle_L
   layers:
   - Default
   - TransparentFX
