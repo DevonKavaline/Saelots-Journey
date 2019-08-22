@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 /// <TODO>
 /// Fix jump counter reset. see Jumpcheck function
@@ -28,6 +30,8 @@ public class JumpAbility : MonoBehaviour
     private Rigidbody rb;
     private float distanceToGround;
 
+    public TextMeshProUGUI jumpCounterUI;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +47,7 @@ public class JumpAbility : MonoBehaviour
         {
             Jump();
         }
+        jumpCounterUI.text = currentJumpCount.ToString();
         ///Debug.Log(distanceToGround.ToString());
     }
     public void Jump()
@@ -81,5 +86,6 @@ public class JumpAbility : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         distanceToGround = GetComponent<Collider>().bounds.extents.y;
+        jumpCounterUI.text = currentJumpCount.ToString();
     }
 }

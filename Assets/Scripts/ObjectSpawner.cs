@@ -18,15 +18,22 @@ public class ObjectSpawner : MonoBehaviour
     public float respawnTimeMax;
     public int prefabNumber = 0;
 
+    public float randObjRotation;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(ObstacleWave());
     }
 
+    private void Update()
+    {
+        randObjRotation = Random.Range(0.0f, 360.0f);
+    }
+
     private void SpawnObstacle(int arrayNumber)
     {
-        ObjectPooler.Instance.SpawnFromPool(obstaclePrefabs[arrayNumber].tag, new Vector3(transform.position.x, (transform.position.y + obstaclePrefabs[arrayNumber].transform.position.y),transform.position.z), transform.rotation);
+        ObjectPooler.Instance.SpawnFromPool(obstaclePrefabs[arrayNumber].tag, new Vector3(transform.position.x, (transform.position.y + obstaclePrefabs[arrayNumber].transform.position.y),transform.position.z), (transform.rotation * Quaternion.Euler(0,randObjRotation,0)));
         //Instantiate(obstaclePrefabs[arrayNumber], transform.position, Quaternion.identity);
     }
 
