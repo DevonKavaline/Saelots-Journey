@@ -10,6 +10,7 @@ TagManager:
   - M_Enemy
   - Obstacle_M
   - Obstacle_L
+  - Tree
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - PostProcessing
   - Obstacles
   - Enemies
-  - 
+  - Scenery
   - 
   - 
   - 
