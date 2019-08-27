@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 /// <summary>
 /// Lost Child Enemy AI script
@@ -15,6 +16,8 @@ public class LostChild : MonoBehaviour
     private int damagePattern; //this needs to either equal 1 or 2!
 
     private LostChildAnimation animController;
+    private ObstacleMovement lostChildMovement;
+    private Transform targetPlayer; //Watches were the player is located.
 
     // Start is called before the first frame update
     void Start()
@@ -31,12 +34,33 @@ public class LostChild : MonoBehaviour
             isRunning = true;
             animController.LostChildRunAnimation(isRunning);
         }
+        if (isRunning = true && playerDeath == false && isAttacking != true && targetPlayer != null)
+        {
+            AttackCheck();
+        }
+        if(targetPlayer == null || playerDeath == true)
+        {
+            PlayerLostIdle();
+        }
     }
-
-    void Attack()
+    void AttackCheck()
     {
-        /// This should be activated if the player is within range of the enemy
-        /// the enemy then activates the attack animation with "isAttacking"
+        if(Vector3.Distance(targetPlayer.position, gameObject.transform.position) < 10)
+        {
+            StartCoroutine(Attack());
+        }
+        else
+        {
+            return;
+        }
+    }
+    IEnumerator Attack()         /// This should be activated if the player is within range of the enemy
+    {
+        isAttacking = true;
+        animController.LostChildAttackAnimation(isAttacking);/// the enemy then activates the attack animation with "isAttacking"
+        yield return new WaitForSeconds(1.0f);
+        isAttacking = false;
+        animController.LostChildAttackAnimation(isAttacking);
         /// during a certain frame of the attack a trigger will spawn in the attack area and immediately disappear again
         /// if the trigger was tripped then the player will recieve damage that will be calculated on the player's side
         /// once the attack is over the "isAttacking" bool is reset to false and the enemy can try to attack again.
@@ -55,6 +79,16 @@ public class LostChild : MonoBehaviour
 
     void PlayerLostIdle()
     {
+        while (lostChildMovement.moveSpeed > 0.0f) {
+            lostChildMovement.moveSpeed -= Time.deltaTime;
+        }
+        isRunning = false;
+        isAttacking = false;
+        isDamaged = false;
+        animController.LostChildRunAnimation(isRunning);
+        animController.LostChildAttackAnimation(isAttacking);
+        animController.LostChildDamageAnimation(isDamaged, damagePattern);
+        animController.LostChildPlayerLostIdle(playerDeath);
         ///This should be activated on player death
         ///this will decrease the speed of the enemy until 0
         ///then the "playerDeath" boolean will be tripped
@@ -63,5 +97,16 @@ public class LostChild : MonoBehaviour
     void SetInitialReferences()
     {
         animController = GetComponent<LostChildAnimation>();
+        lostChildMovement = gameObject.GetComponent<ObstacleMovement>();
+        targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        if(targetPlayer == null)
+        {
+            Debug.LogError("No PlayerGameObject in the current Scene!");
+            return;
+        }
+    }
+    void AttackEnd()
+    {
+
     }
 }

@@ -30,7 +30,7 @@ public class JumpAbility : MonoBehaviour
     private Rigidbody rb;
     private float distanceToGround;
 
-    public TextMeshProUGUI jumpCounterUI;
+    public TextMeshProUGUI jumpCounterUI; //turn into a private variable that is connected to the jump
 
     // Start is called before the first frame update
     void Start()
