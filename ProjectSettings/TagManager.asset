@@ -6,11 +6,10 @@ TagManager:
   tags:
   - Obstacle
   - Weapon
-  - S_Enemy
-  - M_Enemy
   - Obstacle_M
   - Obstacle_L
   - Tree
+  - Enemy
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,12 @@ public class Health : MonoBehaviour
 
     public bool canRegenerate;
 
+    private ObjectPooler objPol;
+
+    private void Start()
+    {
+        objPol = GameObject.Find("ObjectPooler").GetComponent<ObjectPooler>();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -28,11 +34,13 @@ public class Health : MonoBehaviour
     }
     void ObjectDeath()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        objPol.ReturnToPool(gameObject);
+        
     }
     void ObjectDamage(int damage)
     {
-        if (gameObject.CompareTag("S_Enemy")) {
+        if (gameObject.CompareTag("Enemy")) {
             health -= (damage - armor);
         }
     }
