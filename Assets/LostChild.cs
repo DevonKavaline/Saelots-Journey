@@ -19,10 +19,20 @@ public class LostChild : MonoBehaviour
     private ObstacleMovement lostChildMovement;
     private Transform targetPlayer; //Watches were the player is located.
 
+    //for movement
+    public float movementSpeed;
+
+    //ground detection && Jumping
+    public bool onGround;
+    private float distanceToGround;
+    private float disdown = 2;
+    private bool canJump;
+    private int currentJumpCount;
+
     //for Damage Knockback
-    private float knockbackForce;
     private float knockbackTime;
     private float knockbackCounter;
+    Rigidbody rb;
 
     // Start is called before the first frame update
     void Start()
@@ -30,16 +40,15 @@ public class LostChild : MonoBehaviour
         isRunning = true;
         SetInitialReferences();
     }
-
     private void Awake()
     {
         gameObject.transform.rotation = Quaternion.Euler(0, -90, 0);
     }
-
     // Update is called once per frame
     void Update()
     {
         FixRotation();
+        GroundCheck();
         if (knockbackCounter <= 0)
         {
             if (isRunning != true && playerDeath == false)
@@ -60,6 +69,13 @@ public class LostChild : MonoBehaviour
         {
             knockbackCounter -= Time.deltaTime;
         }
+    }
+    void GroundCheck()
+    {
+        Debug.Log(distanceToGround);
+        Debug.Log(Physics.Raycast(transform.position,Vector3.down,disdown));
+        //Gizmos.DrawLine(transform.position, distanceToGround);
+        
     }
     void AttackCheck()
     {
@@ -84,13 +100,16 @@ public class LostChild : MonoBehaviour
         /// once the attack is over the "isAttacking" bool is reset to false and the enemy can try to attack again.
         /// this should be a IEnumerator.
     }
-
-    void Damage()
+    public void Damage( Vector3 colDirection, int WeaponDamage, float knockBackForce)
     {
-        damagePattern = Random.Range(1, 2);
+        damagePattern = Random.Range(1, 3);
         isDamaged = true;
+        if (isDamaged)
+        {
+            movementSpeed = 0;
+        }
         animController.LostChildDamageAnimation(isDamaged, damagePattern);
-        //KnockBack();
+        StartCoroutine(KnockBack(colDirection, knockBackForce));
         ///This should be activated if a trigger with the tag of "Weapon" collides with the enemy weapon
         ///the boolean for "isDamaged" should be tripped
         ///the int "damagePattern" should be a random number between "1" or "2", this determines which damage animation will play
@@ -98,12 +117,13 @@ public class LostChild : MonoBehaviour
         ///after the enemy lands on the ground, the "isDamaged" bool should be reset to false
         ///this should also be an IEnumerator(?)
     }
-    //void KnockBack(Vector3 direction)
-    //{
-    //    knockbackCounter = knockbackTime;
-    //    moveDirection = direction * knockbackForce;
-    //}
-
+    IEnumerator KnockBack(Vector3 direction, float knockbackForce)
+    {
+        knockbackCounter = knockbackTime;
+        Vector3 moveDirection = transform.position - direction;
+        rb.AddForce(moveDirection * knockbackForce);
+        yield return new WaitUntil(() => onGround == true);
+    }
     void PlayerLostIdle()
     {
         while (lostChildMovement.moveSpeed > 0.0f) {
@@ -126,7 +146,9 @@ public class LostChild : MonoBehaviour
         animController = GetComponent<LostChildAnimation>();
         lostChildMovement = gameObject.GetComponent<ObstacleMovement>();
         targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
-        if(targetPlayer == null)
+        rb = GetComponent<Rigidbody>();
+        distanceToGround = GetComponent<Collider>().bounds.extents.y;
+        if (targetPlayer == null)
         {
             Debug.LogError("No PlayerGameObject in the current Scene!");
             return;

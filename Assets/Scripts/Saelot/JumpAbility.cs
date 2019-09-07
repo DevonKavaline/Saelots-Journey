@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 /// <TODO>
@@ -57,6 +56,10 @@ public class JumpAbility : MonoBehaviour
     }
     public void JumpCheck()
     {
+        if(currentJumpCount <= 0)
+        {
+            currentJumpCount = 0;
+        }
         if (!Physics.Raycast(transform.position, -Vector3.up, distanceToGround + 0.00001f) && currentJumpCount > 0)
         {
             canJump = true;

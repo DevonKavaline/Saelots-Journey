@@ -18,9 +18,12 @@ public class Health : MonoBehaviour
     public bool canRegenerate;
 
     private ObjectPooler objPol;
+    public GameObject ragDoll;
+    private Rigidbody rb;
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         objPol = GameObject.Find("ObjectPooler").GetComponent<ObjectPooler>();
     }
     // Update is called once per frame
@@ -34,8 +37,10 @@ public class Health : MonoBehaviour
     }
     void ObjectDeath()
     {
-        gameObject.SetActive(false);
-        objPol.ReturnToPool(gameObject);
+        GetComponent<Animator>().enabled = false;
+        GetComponent<BoxCollider>().enabled = false;
+        rb.constraints = RigidbodyConstraints.None;
+        ragDoll.SetActive(true);
         
     }
     void ObjectDamage(int damage)
