@@ -1931,6 +1931,7 @@ GameObject:
   - component: {fileID: 5368792453340150967}
   - component: {fileID: 8579367798541870668}
   - component: {fileID: 7725282771248855121}
+  - component: {fileID: -5999610201132944851}
   m_Layer: 10
   m_Name: lostschild
   m_TagString: Enemy
@@ -2067,6 +2068,19 @@ MonoBehaviour:
   regenerationRate: 0
   canRegenerate: 0
   ragDoll: {fileID: 5564833963421315512}
+--- !u!114 &-5999610201132944851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598216214331287341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d26099ba58f7e2b44a5ae5979103a916, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockBackForce: 2000
 --- !u!1 &4674888369043065987
 GameObject:
   m_ObjectHideFlags: 0

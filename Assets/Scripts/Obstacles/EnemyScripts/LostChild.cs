@@ -48,6 +48,7 @@ public class LostChild : MonoBehaviour
     void Update()
     {
         FixRotation();
+        KeepOnTrack();
         GroundCheck();
         if (knockbackCounter <= 0)
         {
@@ -68,6 +69,14 @@ public class LostChild : MonoBehaviour
         else
         {
             knockbackCounter -= Time.deltaTime;
+        }
+    }
+    void KeepOnTrack()
+    {
+        Vector3 charPos = gameObject.transform.position;
+        if(charPos.z != 0)
+        {
+            charPos.z = 0;
         }
     }
     void GroundCheck()
@@ -109,7 +118,8 @@ public class LostChild : MonoBehaviour
             movementSpeed = 0;
         }
         animController.LostChildDamageAnimation(isDamaged, damagePattern);
-        StartCoroutine(KnockBack(colDirection, knockBackForce));
+        //StartCoroutine(KnockBack(colDirection, knockBackForce));
+        gameObject.GetComponent<Knockback>().CharacterKnockBack(colDirection);
         ///This should be activated if a trigger with the tag of "Weapon" collides with the enemy weapon
         ///the boolean for "isDamaged" should be tripped
         ///the int "damagePattern" should be a random number between "1" or "2", this determines which damage animation will play
