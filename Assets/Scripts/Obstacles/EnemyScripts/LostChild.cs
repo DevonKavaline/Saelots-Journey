@@ -81,10 +81,17 @@ public class LostChild : MonoBehaviour
     }
     void GroundCheck()
     {
-        Debug.Log(distanceToGround);
-        Debug.Log(Physics.Raycast(transform.position,Vector3.down,disdown));
-        //Gizmos.DrawLine(transform.position, distanceToGround);
-        
+        //check the distance to ground and set bool for groundcheck to restore jump and end damage animation
+        if(GetComponent<Collider>().bounds.extents.y <= distanceToGround)
+        {
+            onGround = true;
+        }
+        if(onGround && isDamaged)
+        {
+            isDamaged = false;
+            animController.LostChildDamageAnimation(isDamaged, damagePattern);
+        }
+
     }
     void AttackCheck()
     {
@@ -113,6 +120,7 @@ public class LostChild : MonoBehaviour
     {
         damagePattern = Random.Range(1, 3);
         isDamaged = true;
+        onGround = false;
         if (isDamaged)
         {
             movementSpeed = 0;
